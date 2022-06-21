@@ -44,7 +44,7 @@ class Api::CartItemsController < ApplicationController
   private
 
   def set_cart_item
-    @cart_item = CartItem.includes(:product).where(id: params[:id], cart_id: params[:cart_id])
+    @cart_item = CartItem.includes(:product).find_by(id: params[:id], cart_id: params[:cart_id])
   end
 
   def cart_item_params
