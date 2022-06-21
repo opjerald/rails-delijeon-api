@@ -6,5 +6,4 @@ class Product < ApplicationRecord
   validates_presence_of :description
   validates_presence_of :category_id
 
-  scope :recent, -> { order(created_at: :desc) }
 end

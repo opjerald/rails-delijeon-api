@@ -5,8 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Category.create([{name: 'Cookie'}, {name: 'Cupcake'}])
-Product.create([{
+Category.insert_all!([{name: 'Cake'}, {name: 'Cookie'}, {name: 'Cupcake'}])
+Product.insert_all!([{
                   name: 'Veal - Ground',
                   description: 'Athscl autologous vein bypass graft(s) of the extremities',
                   price: 80.04,

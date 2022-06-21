@@ -1,9 +1,8 @@
 class Api::CartItemsController < ApplicationController
   before_action :set_cart_item, only: %i[show update destroy]
-  before_action :set_cart
 
   def index
-    @cart_items = @cart.cart_items.page(params[:page])
+    @cart_items = CartItem.includes(:product).where(cart_id: params[:cart_id])
 
     render json: @cart_items, status: :ok
   end
@@ -13,8 +12,8 @@ class Api::CartItemsController < ApplicationController
   end
 
   def create
-    if @cart.cart_items.where(product_id: params[:product_id]).exists?
-      @item_exist = @cart.cart_items.find_by(product_id: params[:product_id])
+    if CartItem.includes(:product).where(product_id: params[:product_id], cart_id: params[:cart_id]).exists?
+      @item_exist = CartItem.includes(:product).find_by(product_id: params[:product_id], cart_id: params[:cart_id])
       @item_exist.quantity += params[:quantity]
       @item_exist.save
 
@@ -44,19 +43,15 @@ class Api::CartItemsController < ApplicationController
 
   private
 
-  def set_cart
-    @cart = Cart.find_by(id: params[:cart_id])
-  end
-
   def set_cart_item
-    @cart_item = Cart.find_by(id: params[:cart_id]).cart_items.find_by(id: params[:id])
+    @cart_item = CartItem.includes(:product).where(id: params[:id], cart_id: params[:cart_id])
   end
 
   def cart_item_params
     params.require(:cart_item).permit(:quantity, :product_id, :cart_id)
   end
 
-  def page_params
+  def other_params
     params.require(:cart_item).permit(:page)
   end
 end

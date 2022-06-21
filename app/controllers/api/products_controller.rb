@@ -3,7 +3,7 @@ class Api::ProductsController < ApplicationController
 
   # GET /products
   def index
-    @products = Product.recent.page(params[:page])
+    @products = Product.all.includes(:category).page(params[:page])
 
     render json: @products
   end
