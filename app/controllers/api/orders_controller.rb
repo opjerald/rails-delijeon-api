@@ -8,21 +8,9 @@ class Api::OrdersController < ApplicationController
   def create
     if Cart.where(id: params[:cart_id]).exists?
       @order = Order.new()
+      @order.params(params[:cart_id])
 
       if @order.save
-        cart_items = []
-        @items = CartItem.includes(:product).where(cart_id: params[:cart_id])
-        @items.each do |item|
-          cart_items.push({
-                            order_id: @order.id,
-                            product_id: item.product_id,
-                            price: item.product.price,
-                            quantity: item.quantity
-                          })
-        end
-        OrderItem.insert_all!(cart_items)
-        Cart.find_by(id: params[:cart_id]).destroy
-
         render json: @order, status: :created
       else
         render json: { message: 'Something went wrong when setting up an order' }, status: :unprocessable_entity
