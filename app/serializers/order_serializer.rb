@@ -12,7 +12,7 @@ class OrderSerializer < ActiveModel::Serializer
       total_sum += (item.quantity * item.price)
     end
 
-    total_sum
+    total_sum.to_f
   end
 
   def placed_at

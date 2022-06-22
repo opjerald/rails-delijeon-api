@@ -9,22 +9,18 @@ class Order < ApplicationRecord
     @cart_id = cart_id
   end
 
-  def initialize(attributes = nil)
-    super
-  end
-
   def transfer_items
     cart_items = []
-    @items = CartItem.includes(:product).where(cart_id: self.cart_id)
+    @items = CartItem.includes(:product).where(cart_id: @cart_id)
     @items.each do |item|
       cart_items.push({
-                        order_id: self.id,
+                        order_id: id,
                         product_id: item.product_id,
                         price: item.product.price,
                         quantity: item.quantity
                       })
     end
     OrderItem.insert_all!(cart_items)
-    Cart.find_by(id: self.cart_id).destroy
+    Cart.find_by(id: @cart_id).destroy
   end
 end

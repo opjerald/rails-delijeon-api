@@ -2,7 +2,7 @@ class Api::OrderItemsController < ApplicationController
   before_action :set_order_item, only: [:show]
 
   def index
-    @order_items = OrderItem.include(:product).where(order_id: params[:order_id])
+    @order_items = OrderItem.includes(:product).where(order_id: params[:order_id])
 
     render json: @order_items, status: :ok
   end
