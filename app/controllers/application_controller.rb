@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
   def encode_token(payload)
-    JWT.encode(payload, 'secret')
+    JWT.encode(payload, ENV['JWT_SECRET'])
   end
 
   def decode_token
@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
     if auth_header
       token = auth_header.split(' ')[1]
       begin
-        JWT.decode(token, 'secret', true, algorithm: 'HS256')
+        JWT.decode(token, ENV['JWT_SECRET'], true, algorithm: 'HS256')
       rescue JWT::DecodeError
         nil
       end
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::API
     decode_token = self.decode_token
     if decode_token
       user_id = decode_token[0]['user_id']
-      @user = User.find_by(id: user_id)
+      @user = User.find_by(user_id.to_s)
     end
   end
 

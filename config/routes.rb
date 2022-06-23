@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
-  resources :users, only: [:create]
-  post '/login', to: 'users#login'
+  devise_for :users, {
+    controllers: {
+      sessions: 'users/sessions',
+      registrations: 'users/registrations'
+    }
+  }
+
+  get '/users/user', to: 'users/users#show'
+
   namespace :api do
     resources :categories
     resources :products
