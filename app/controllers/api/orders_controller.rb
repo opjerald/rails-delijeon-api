@@ -1,5 +1,12 @@
 class Api::OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :create]
+  before_action :authorized
+  before_action :set_order, only: %i[show create]
+
+  def index
+    @orders = Order.all.page(params[:page])
+
+    render json: @orders, status: :ok
+  end
 
   def show
     render json: @order, status: :ok
@@ -7,7 +14,7 @@ class Api::OrdersController < ApplicationController
 
   def create
     if Cart.where(id: params[:cart_id]).exists?
-      @order = Order.new()
+      @order = Order.new
       @order.params(params[:cart_id])
 
       if @order.save

@@ -1,4 +1,5 @@
 class Api::CategoriesController < ApplicationController
+  before_action :authorized
   before_action :set_category, only: %i[ show update destroy ]
 
   # GET /categories
