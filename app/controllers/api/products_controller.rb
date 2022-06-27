@@ -1,11 +1,16 @@
 class Api::ProductsController < ApplicationController
+  include Pagy::Backend
   before_action :set_product, only: %i[show update destroy]
 
   # GET /products
   def index
-    @products = Product.all.includes(:category).page(params[:page])
+    # @products = Product.all.includes(:category)
+    # @products = Product.includes(:category).price_range(params[:price_gt], params[:price_lt])
+    @products = Product.includes(:category).search(params[:q])
+    @pagy, @records = pagy(@products)
 
-    render json: @products
+    meta = pagy_metadata(@pagy, absolute: true)
+    render json: @records, meta: meta, status: :ok
   end
 
   # GET /products/1
@@ -39,6 +44,10 @@ class Api::ProductsController < ApplicationController
   end
 
   private
+
+  def metadata
+
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_product

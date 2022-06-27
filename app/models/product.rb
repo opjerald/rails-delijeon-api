@@ -3,4 +3,6 @@ class Product < ApplicationRecord
   belongs_to :category
   validates_presence_of :name, :price, :description, :category_id
 
+  scope :price_range, ->(gt = 0, lt) { where('price > ?', gt).and(where('price < ?', lt)) }
+  scope :search, ->(query) { where('name LIKE ?', "%#{query}%") }
 end

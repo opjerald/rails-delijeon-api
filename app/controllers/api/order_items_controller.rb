@@ -1,4 +1,5 @@
 class Api::OrderItemsController < ApplicationController
+  before_action :authorized
   before_action :set_order_item, only: [:show]
 
   def index
