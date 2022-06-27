@@ -6,8 +6,11 @@ class Api::ProductsController < ApplicationController
   def index
     # @products = Product.all.includes(:category)
     # @products = Product.includes(:category).price_range(params[:price_gt], params[:price_lt])
-    @products = Product.includes(:category).search(params[:q])
-    @pagy, @records = pagy(@products)
+    # @products = Product.includes(:category).search(params[:q])
+    @q = Product.includes(:category).ransack(params[:q])
+    @q.sorts = 'price asc' if @q.sorts.empty? && params[:sort] == 'price_asc'
+    @q.sorts = 'price desc' if @q.sorts.empty? && params[:sort] == 'price_desc'
+    @pagy, @records = pagy(@q.result)
 
     meta = pagy_metadata(@pagy, absolute: true)
     render json: @records, meta: meta, status: :ok

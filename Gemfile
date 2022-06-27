@@ -33,7 +33,7 @@ gem "bullet", "~> 7.0"
 
 # gem 'jwt'
 
-gem 'query_helper', '~> 0.2.30'
+gem 'ransack', :github => 'activerecord-hackery/ransack', :branch => 'main'
 
 gem "devise", "~> 4.8"
 

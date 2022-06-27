@@ -104,7 +104,7 @@ require 'pagy/extras/headers'
 # require 'pagy/extras/shared'
 require 'pagy/extras/metadata'
 # For performance reasons, you should explicitly set ONLY the metadata you use in the frontend
-Pagy::DEFAULT[:metadata] = %i[page prev next last]
+Pagy::DEFAULT[:metadata] = %i[page_url first_url last_url next_url prev_url page prev next last]
 
 # Searchkick extra: Paginate `Searchkick::Results` objects
 # See https://ddnexus.github.io/pagy/extras/searchkick
@@ -116,7 +116,6 @@ Pagy::DEFAULT[:metadata] = %i[page prev next last]
 # require 'pagy/extras/searchkick'
 # uncomment if you are going to use Searchkick.pagy_search
 # Searchkick.extend Pagy::Searchkick
-
 
 # Frontend Extras
 
